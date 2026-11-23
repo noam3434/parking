@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galactic Spaceport – לוח שומר</title>
+<style>
+  body { margin:0; font-family:system-ui,Arial,sans-serif; background:#070b1a; color:#e8ecff; transition:.3s; }
+  body.light { background:#f2f5ff; color:#12183a; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid #ffffff22; }
+  h1 { margin:0; font-size:1.4rem; }
+  button { cursor:pointer; border:0; border-radius:8px; padding:8px 14px; font-weight:600; background:#4fd1ff; color:#04101c; }
+  main { max-width:1000px; margin:24px auto; padding:0 16px; }
+  .bar { display:flex; justify-content:space-between; margin-bottom:16px; color:#8b95c4; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+  .card { background:#121a33; border-radius:12px; overflow:hidden; }
+  body.light .card { background:#fff; }
+  .card img { width:100%; display:block; }
+  .card div { padding:8px 12px; font-size:.85rem; color:#8b95c4; }
+  #toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#121a33; color:#e8ecff; padding:10px 18px; border-radius:10px; display:none; border:1px solid #4fd1ff; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 Galactic Spaceport – חניון חלליות</h1>
+  <button id="theme">☀️ / 🌙</button>
+</header>
+<main>
+  <div class="bar"><span>חלליות שצולמו: <b id="count">0</b></span><span id="clock"></span></div>
+  <div id="grid"></div>
+</main>
+<div id="toast"></div>
+<script>
+// Images are served by the Apache "storage" container, through Nginx at /images/
+const FILES = ["car1.svg","car2.svg","car3.svg","car4.svg","car5.svg","car6.svg","car7.svg"];
+const grid = document.getElementById("grid");
+let n = 0;
+FILES.forEach(f => {
+  const card = document.createElement("div"); card.className = "card";
+  const img = document.createElement("img"); img.src = "/images/" + f; img.alt = f;
+  img.onload = () => { n++; document.getElementById("count").textContent = n; };
+  img.onerror = () => card.remove();            // file missing in storage -> hide card
+  const cap = document.createElement("div"); cap.textContent = "📷 " + f;
+  card.append(img, cap);
+  grid.append(card);
+});
+setInterval(() => document.getElementById("clock").textContent = new Date().toLocaleTimeString("he-IL"), 1000);
+document.getElementById("theme").onclick = () => document.body.classList.toggle("light");
+
+// Easter egg: Konami code
+const K = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"]; let p = 0;
+document.addEventListener("keydown", e => {
+  p = e.key === K[p] ? p + 1 : 0;
+  if (p === K.length) { p = 0; document.body.style.filter = "hue-rotate(180deg)";
+    const t = document.getElementById("toast"); t.textContent = "🛸 May the Force park with you"; t.style.display = "block"; }
+});
+</script>
+</body>
+</html>

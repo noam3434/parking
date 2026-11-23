@@ -1,0 +1,17 @@
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    depends_on:
+      - storage
+
+  storage:
+    build: ./storage
+    ports:
+      - "8081:80"          # direct access to the storage server (for the demo)
+    volumes:
+      - camera-images:/usr/local/apache2/htdocs/images
+
+volumes:
+  camera-images:

@@ -11,7 +11,7 @@
 | `web` | nginx:alpine | מגיש את `index.html` ומעביר `/images/` לשרת האחסון |
 | `storage` | httpd:2.4-alpine | שרת אחסון בלבד – מגיש את תמונות המצלמה, מ-Named Volume |
 
-## הרצהה
+## הרצההה
 ```bash
 docker compose up --build -d
 ```
